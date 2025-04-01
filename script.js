@@ -9,30 +9,33 @@ const weatherIcon = document.querySelector(".weather-icon");
 async function checkWeather(city) {
   const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
 
-  if (response.status === "404") {
-    document.querySelector(".city").innerHTML = "City not found!";
+  if (response.status == 404) {
+    document.querySelector(".error").style.display = "block";
+    document.querySelector(".weather").style.display = "none";
     return;
+  } else {
+    var data = await response.json();
+
+    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".temp").innerHTML =
+      Math.round(data.main.temp) + "°C";
+    document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+    document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+
+    const weatherConditions = {
+      Clouds: "./images/cloudy-sunny.png",
+      Clear: "./images/sun.png",
+      Rain: "./images/rainy-day.png",
+      Drizzle: "./images/cloudy-sunny.png",
+      Mist: "./images/cloudy.png",
+    };
+
+    weatherIcon.src =
+      weatherConditions[data.weather[0].main] || "./images/default.png";
+
+    document.querySelector(".weather").style.display = "block";
+    document.querySelector(".error").style.display = "none";
   }
-
-else{var data = await response.json();
-
-  document.querySelector(".city").innerHTML = data.name;
-  document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
-  document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
-  document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
-
-  const weatherConditions = {
-    Clouds: "./images/cloudy-sunny.png",
-    Clear: "./images/sun.png",
-    Rain: "./images/rainy-day.png",
-    Drizzle: "./images/cloudy-sunny.png",
-    Mist: "./images/cloudy.png",
-  };
-
-  weatherIcon.src =
-    weatherConditions[data.weather[0].main] || "./images/default.png";
-
-  document.querySelector(".weather").style.display = "block";}
 }
 
 searchBtn.addEventListener("click", () => {

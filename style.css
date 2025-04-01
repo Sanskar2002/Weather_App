@@ -108,3 +108,11 @@ body{
     background: #d4fff7;
     transition: 0.3s;
 }
+
+.error{
+    text-align: left;
+    margin-left: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+}
